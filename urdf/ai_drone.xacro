@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<robot name="ai_drone" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="body_length" value="0.5" />
+  <xacro:property name="body_width" value="0.5" />
+  <xacro:property name="body_height" value="0.2" />
+  <xacro:property name="camera_size" value="0.1" />
+  <xacro:property name="camera_color" value="0 0 0 1" />
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="${camera_size} ${camera_size} ${camera_size}"/>
+      </geometry>
+      <material name="camera_color">
+        <color rgba="${camera_color}"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${camera_size} ${camera_size} ${camera_size}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <!-- IMU -->
+  <gazebo>
+    <plugin name="imu_sensor" filename="libgazebo_ros_imu.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>gz_imu:=imu</remapping>
+      </ros>
+      <robotNamespace/>
+      <update_rate>50.0</update_rate>
+      <body_name>base_link</body_name>
+      <topic_name>imu</topic_name>
+      <service_name>~/imu_calibrate</service_name>
+      <gaussian_noise>0.01</gaussian_noise>
+    </plugin>
+  </gazebo>
+
+  <!-- GPS -->
+  <gazebo>
+    <plugin name="gps_plugin" filename="libgazebo_ros_gps.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>fix:=gps/fix</remapping>
+        <remapping>velocity:=gps/velocity</remapping>
+      </ros>
+      <robotNamespace/>
+      <update_rate>5.0</update_rate>
+      <body_name>base_link</body_name>
+    </plugin>
+  </gazebo>
+
+  <!-- LiDAR -->
+  <gazebo>
+    <plugin name="gpu_ray" filename="libgazebo_ros_gpu_laser.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>scan:=scan</remapping>
+      </ros>
+      <robotNamespace/>
+      <update_rate>10.0</update_rate>
+      <body_name>base_link</body_name>
+      <topic_name>scan</topic_name>
+      <frame_name>base_link</frame_name>
+    </plugin>
+  </gazebo>
+</robot>

@@ -15,7 +15,7 @@ def generate_launch_description():
     
     # Chemin du fichier RViz
     rviz_config_file = os.path.join(package_share_directory, 'rviz', 'drone_config.rviz')
-
+    
     # Read the URDF file
     with open(urdf_file, 'r') as infp:
         robot_description = infp.read()
