@@ -10,6 +10,8 @@
 
 * [Cartographer ROS](https://google-cartographer-ros.readthedocs.io/en/latest/)
 
+* [Ubuntu 22.04](https://releases.ubuntu.com/jammy/)
+
 
 ### Workspace Requirements
 
