@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<sdf version="1.9">
-    <world name="moon">
+<sdf version="1.6">
+  <world name="map">
     <physics name="1ms" type="ignore">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -38,28 +38,75 @@
     <plugin filename="gz-sim-navsat-system"
       name="gz::sim::systems::NavSat">
     </plugin>
+
     <scene>
       <sky></sky>
       <grid>false</grid>
       <ambient>1.0 1.0 1.0</ambient>
       <background>0.8 0.8 0.8</background>
     </scene>
-    
-      <light type="directional" name="sun">
-        <cast_shadows>true</cast_shadows>
-        <pose>0 0 10 0 0.75 0</pose>
-        <diffuse>0.8 0.8 0.8 1</diffuse>
-        <specular>0.0 0.0 0.0 1</specular>
-        <intensity>5</intensity>
-        <attenuation>
-          <range>100</range>
-          <constant>0.9</constant>
-          <linear>0.01</linear>
-          <quadratic>0.001</quadratic>
-        </attenuation>
-        <direction>-0.5 0.1 -0.9</direction>
-      </light>
-
+    <spherical_coordinates>
+      <latitude_deg>-35.3632621</latitude_deg>
+      <longitude_deg>149.1652374</longitude_deg>
+      <elevation>10.0</elevation>
+      <heading_deg>0</heading_deg>
+      <surface_model>EARTH_WGS84</surface_model>
+    </spherical_coordinates>
+    <model name="axes">
+      <static>true</static>
+      <link name="link">
+        <visual name="r">
+          <cast_shadows>0</cast_shadows>
+          <pose>5 0 0.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>10 0.01 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 0.8</ambient>
+            <diffuse>1 0 0 0.8</diffuse>
+            <emissive>1 0 0 0.8</emissive>
+            <specular>0.5 0.5 0.5 0.8</specular>
+          </material>
+        </visual>
+        <visual name="g">
+          <cast_shadows>0</cast_shadows>
+          <pose>0 5 0.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.01 10 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0 1 0 0.8</ambient>
+            <diffuse>0 1 0 0.8</diffuse>
+            <emissive>0 1 0 0.8</emissive>
+            <specular>0.5 0.5 0.5 0.8</specular>
+          </material>
+        </visual>
+        <visual name="b">
+          <cast_shadows>0</cast_shadows>
+          <pose>0 0 5.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.01 0.01 10</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0 0 1 0.8</ambient>
+            <diffuse>0 0 1 0.8</diffuse>
+            <emissive>0 0 1 0.8</emissive>
+            <specular>0.5 0.5 0.5 0.8</specular>
+          </material>
+        </visual>
+        <sensor name="navsat_sensor" type="navsat">
+          <always_on>1</always_on>
+          <update_rate>1</update_rate>
+        </sensor>
+      </link>
+      </model>
+      
       <include>
         <uri>
           https://fuel.gazebosim.org/1.0/OpenRobotics/models/Null Island
@@ -72,9 +119,9 @@
         </uri>
       </include>
       <include>
-        <uri>model://iris_with_lidar</uri>
+        <uri>model://iris_with_gimbal</uri>
         <name>iris</name>
-        <pose degrees="true">0 0 0.700 0 0 0</pose>
+        <pose degrees="true">0 0 0.800 0 0 0</pose>
       </include>
       </world>
   </sdf>
