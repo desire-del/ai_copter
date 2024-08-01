@@ -30,7 +30,7 @@ Follow this youtube tutorial for setup the workspace: ![youtube](https://www.you
 
 ```bash
 cd ~/ros2_ws/src
-git clone 
+git clone https://github.com/desire-del/ai_copter.git
 
 ```
 
