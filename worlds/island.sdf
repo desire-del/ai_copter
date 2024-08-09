@@ -38,7 +38,19 @@
     <plugin filename="gz-sim-navsat-system"
       name="gz::sim::systems::NavSat">
     </plugin>
-
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
+      <graded_buoyancy>
+        <default_density>1000</default_density>
+        <density_change>
+          <above_depth>-1.7</above_depth>
+          <density>1</density>
+        </density_change>
+      </graded_buoyancy>
+      <enable>tethys</enable>
+      <enable>boat</enable>
+    </plugin>
     <scene>
       <sky></sky>
       <grid>false</grid>
@@ -114,14 +126,41 @@
       </include>
       
       <include>
-        <uri>
-          https://fuel.gazebosim.org/1.0/OpenRobotics/models/Coast Water
-        </uri>
+        <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Coast Water</uri>
       </include>
       <include>
         <uri>model://iris_with_gimbal</uri>
         <name>iris</name>
         <pose degrees="true">0 0 0.800 0 0 0</pose>
+      </include>
+      <include>
+        <uri>https://fuel.gazebosim.org/1.0/kaikaiwu/models/Vessel E</uri>
+        <name>boat</name>
+        <pose degrees="true">15 10 2.0 0 0 0</pose> <!-- Ajustez la hauteur pour qu'il soit au-dessus de l'eau -->
+        <link name="link">
+          <inertial>
+            <mass>500</mass> <!-- Ajustez la masse selon les besoins -->
+            <inertia>
+              <ixx>1.0</ixx>
+              <iyy>1.0</iyy>
+              <izz>1.0</izz>
+            </inertia>
+          </inertial>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>1 1 1</size> <!-- Ajustez la taille selon les besoins -->
+              </box>
+            </geometry>
+          </collision>
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>1 1 1</size> <!-- Ajustez la taille selon les besoins -->
+              </box>
+            </geometry>
+          </visual>
+        </link>
       </include>
       </world>
   </sdf>
